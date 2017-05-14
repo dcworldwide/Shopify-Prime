@@ -19,6 +19,7 @@ import ApplicationCredits from "./services/application_credits";
 import Discounts from "./services/discounts";
 import GiftCards from "./services/gift_cards";
 import Redirects from "./services/redirects";
+import PriceRules from "./services/price_rules";
 
 export {
     Auth,
@@ -34,5 +35,6 @@ export {
     ApplicationCredits,
     Discounts,
     GiftCards,
-    Redirects
+    Redirects,
+    PriceRules
 };
