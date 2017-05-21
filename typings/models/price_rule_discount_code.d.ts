@@ -1,11 +1,11 @@
 import { ShopifyObject } from "./base";
 
-export interface PricingRuleDiscountCode extends ShopifyObject {
+export interface PriceRuleDiscountCode extends ShopifyObject {
 
     /** 
      * The unique identifier for the price rule associated to the discount code.
      */
-    price_rule_id: number;
+    price_rule_id?: number;
 
     /** 
      * The case-insensitive discount code that customers use at checkout. Required 

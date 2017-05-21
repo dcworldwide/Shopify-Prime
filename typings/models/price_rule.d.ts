@@ -16,7 +16,8 @@ export interface PriceRule extends ShopifyObject {
     target_type: "line_item" | "shipping_line"
 
     /** 
-     * The target selection method of the price rule.Use all to apply the discount to all line items in the checkout and use entitled to apply to selected entitlements.
+     * The target selection method of the price rule. Use all to apply the discount to all line items
+     * in the checkout and use entitled to apply to selected entitlements.
      */
     target_selection: "all" | "entitled"
 
@@ -37,7 +38,7 @@ export interface PriceRule extends ShopifyObject {
      * The value of the price rule. If target_type is shipping_line, then only -100 is accepted.
      * It's important to note that when discounting a resource, the value must be a negative number.
      */
-    value: number
+    value: string
 
     /** 
      * The price rule can only be used once per customer (tracked by customer id).

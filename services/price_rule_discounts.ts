@@ -1,4 +1,4 @@
-import { PricingRuleDiscountCode as DiscountCode } from "../typings/models/price_rule_discount_code";
+import { PriceRuleDiscountCode } from "../typings/models/price_rule_discount_code";
 import BaseService from "../infrastructure/base_service";
 
 // Enums 
@@ -18,22 +18,22 @@ export default class PriceRuleDiscounts extends BaseService {
      * @param options Options for filtering the results.
      */
     public list(options?: ListOptions) {
-        return this.createRequest<DiscountCode[]>("GET", ".json", "discount_codes", options);
+        return this.createRequest<PriceRuleDiscountCode[]>("GET", ".json", "discount_codes", options);
     }
 
     /**
      * Creates a new discount code for a given price rule.
      * Note: Currently, you can only create a single discount code per price rule.
      */
-    public create(discount: DiscountCode) {
-        return this.createRequest<DiscountCode>("POST", ".json", "discount_codes", { discount_code: discount });
+    public create(discount: PriceRuleDiscountCode) {
+        return this.createRequest<PriceRuleDiscountCode>("POST", ".json", "discount_code", { discount_code: discount });
     }
 
     /**
      * Returns details about a single discount code object.
      */
     public get(id: number) {
-        return this.createRequest<DiscountCode>("GET", `${id}.json`, "discount_codes");
+        return this.createRequest<PriceRuleDiscountCode>("GET", `${id}.json`, "discount_code");
     }
 
     /**
@@ -46,14 +46,14 @@ export default class PriceRuleDiscounts extends BaseService {
      * // https://your-store-domain.myshopify.com/admin/discount_codes/lookup?code=discountCode
      */
     public lookup(code: string) {
-        return this.createRequest<DiscountCode>("GET", `discount_codes/lookup?code=${code}`);
+        return this.createRequest<PriceRuleDiscountCode>("GET", `discount_codes/lookup?code=${code}`);
     }
 
     /**
      * Updates a single discount code for a given price rule.
      */
-    public update(id: number, discount: DiscountCode) {
-        return this.createRequest<DiscountCode>("PUT", `${id}.json`, "discount_codes", { discount_code: discount });
+    public update(id: number, discount: PriceRuleDiscountCode) {
+        return this.createRequest<PriceRuleDiscountCode>("PUT", `${id}.json`, "discount_code", { discount_code: discount });
     }
 
     /**

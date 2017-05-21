@@ -28,7 +28,7 @@ export default class PriceRules extends BaseService {
      * discount code as well. 
      */
     public create(PriceRule: PriceRule) {
-        return this.createRequest<PriceRule>("POST", ".json", "price_rules", { price_rule: PriceRule });
+        return this.createRequest<PriceRule>("POST", ".json", "price_rule", { price_rule: PriceRule });
     }
 
     /**
@@ -36,7 +36,7 @@ export default class PriceRules extends BaseService {
      * @param options Options for filtering the results.
      */
     public get(id: number) {
-        return this.createRequest<PriceRule>("GET", `${id}.json`, "price_rules");
+        return this.createRequest<PriceRule>("GET", `${id}.json`, "price_rule");
     }
 
     /**
@@ -44,7 +44,7 @@ export default class PriceRules extends BaseService {
      * @param tag The updated Price Rule.
      */
     public update(id: number, PriceRule: PriceRule) {
-        return this.createRequest<PriceRule>("PUT", `${id}.json`, "price_rules", { price_rule: PriceRule });
+        return this.createRequest<PriceRule>("PUT", `${id}.json`, "price_rule", { price_rule: PriceRule });
     }
 
     /**

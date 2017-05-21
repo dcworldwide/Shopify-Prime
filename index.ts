@@ -20,6 +20,7 @@ import Discounts from "./services/discounts";
 import GiftCards from "./services/gift_cards";
 import Redirects from "./services/redirects";
 import PriceRules from "./services/price_rules";
+import PriceRuleDiscounts from "./services/price_rule_discounts";
 
 export {
     Auth,
@@ -36,5 +37,6 @@ export {
     Discounts,
     GiftCards,
     Redirects,
-    PriceRules
+    PriceRules,
+    PriceRuleDiscounts
 };
