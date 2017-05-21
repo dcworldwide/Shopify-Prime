@@ -4,11 +4,11 @@ import { Transaction } from "./transaction";
 export interface Refund extends ShopifyObject {
     id: number;
     order_id: any;
-    created_at?: Date;
+    created_at?: string;
     note: string;
     restock?: any;
     user_id: number;
-    processed_at?: Date;
+    processed_at?: string;
     refund_line_items: any[];
     transactions: Transaction[];
     order_adjustments: OrderAdjustment[];

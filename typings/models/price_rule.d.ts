@@ -105,12 +105,12 @@ export interface PriceRule extends ShopifyObject {
     /** 
      * The date and time when the price rule starts.
      */
-    starts_at: Date
+    starts_at: string
 
     /** 
      * The date and time when the price rule ends.Must be after starts_at.
      */
-    ends_at?: Date
+    ends_at?: string
 
     /** 
      * The id of the price rule
@@ -120,10 +120,10 @@ export interface PriceRule extends ShopifyObject {
     /** 
      * By default, this auto- generated property is the date and time when the price rule was created in Shopify, in ISO 8601 format.
      */
-    created_at?: Date
+    created_at?: string
 
     /** 
      * The date and time when the price rule was last updated.
      */
-    updated_at?: Date
+    updated_at?: string
 }

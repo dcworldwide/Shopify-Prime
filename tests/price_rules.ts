@@ -24,7 +24,7 @@ describe("Price Rules", function () {
             prerequisite_subtotal_range: {
                 greater_than_or_equal_to: 40.0
             },
-            starts_at: new Date()
+            starts_at: new Date().toISOString()
         };
 
         return pr;
