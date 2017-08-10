@@ -3,7 +3,7 @@ import BaseService from "../infrastructure/base_service";
 
 // Enums 
 import { PriceRuleOptions } from "../typings/options/price_rules";
-import { FieldOptions, ListOptions } from "../typings/options/base";
+import { FieldOptions, ListOptions, DateOptions } from "../typings/options/base";
 
 /**
  * A service for manipulating Shopify Price Rules.
@@ -18,7 +18,7 @@ export default class PriceRules extends BaseService {
      * Gets a list of up to 250 of the shop's Price Rules.
      * @param options Options for filtering the results.
      */
-    public list(options?: PriceRuleOptions & ListOptions & FieldOptions) {
+    public list(options?: PriceRuleOptions & ListOptions & FieldOptions & DateOptions) {
         return this.createRequest<PriceRule[]>("GET", ".json", "price_rules", options);
     }
 
