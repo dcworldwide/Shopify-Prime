@@ -1,4 +1,4 @@
-import { OrderStatus} from "../enums/order_status";
+import { OrderStatus } from "../enums/order_status";
 import { FinancialStatus } from "../enums/financial_status";
 import { FulfillmentStatus } from "../enums/fulfillment_status";
 import { InventoryBehavior } from "../enums/inventory_behavior";
@@ -17,7 +17,7 @@ export interface OrderListOptions extends FieldOptions, DateOptions, ProcessedOp
     /**
      * A comma-separated list of order ids.
      */
-    ids?: string;
+    ids?: string | string[] | number[];
 }
 
 export interface OrderCreateOptions {

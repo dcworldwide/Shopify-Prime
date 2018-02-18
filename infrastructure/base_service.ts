@@ -5,6 +5,7 @@ import ShopifyError from "./shopify_error";
 
 //Get package.json from 2-levels up as this file will be in dist/infrastructure.
 const version = require(resolve(__dirname, "../../package.json")).version;
+const debug = process.env.SHOPIFY_PRIME_DEBUG
 
 class BaseService {
     constructor(private shopDomain: string, private accessToken: string, private resource: string) {
@@ -52,9 +53,10 @@ class BaseService {
         }
         else if (payload) {
             options.body = JSON.stringify(payload);
-
             options.headers["Content-Type"] = "application/json";
         }
+
+        debug && console.log(url.toString(), options)
 
         //Fetch will only throw an exception when there is a network-related error, not when Shopify returns a non-200 response.
         const result = await fetch(url.toString(), options);
