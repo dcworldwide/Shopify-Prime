@@ -29,3 +29,25 @@ export interface PriceRuleDiscountCode extends ShopifyObject {
      */
     updated_at?: string
 }
+
+
+export interface DiscountCodeBatchJob {
+    id: number
+    price_rule_id: number
+    started_at?: Date
+    completed_at?: Date
+    created_at: Date
+    updated_at: Date
+    status: "queued" | "completed"
+    codes_count: number
+    imported_count: number
+    failed_count: number
+}
+
+export interface DiscountCodeBatchJobCode {
+    id: number
+    code: string
+    errors: {
+        [index: string]: string[]
+    }
+}

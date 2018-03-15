@@ -1,7 +1,5 @@
 import { PriceRule } from "../typings/models/price_rule";
 import BaseService from "../infrastructure/base_service";
-
-// Enums 
 import { PriceRuleOptions } from "../typings/options/price_rules";
 import { FieldOptions, ListOptions, DateOptions } from "../typings/options/base";
 
@@ -27,8 +25,8 @@ export default class PriceRules extends BaseService {
      * a price rule to be accessible via the admin section of Shopify, you will need to create a 
      * discount code as well. 
      */
-    public create(PriceRule: PriceRule) {
-        return this.createRequest<PriceRule>("POST", ".json", "price_rule", { price_rule: PriceRule });
+    public create(pr: PriceRule) {
+        return this.createRequest<PriceRule>("POST", ".json", "price_rule", { price_rule: pr });
     }
 
     /**
@@ -43,8 +41,8 @@ export default class PriceRules extends BaseService {
      * Updates the Price Rule with the given id.
      * @param tag The updated Price Rule.
      */
-    public update(id: number, PriceRule: PriceRule) {
-        return this.createRequest<PriceRule>("PUT", `${id}.json`, "price_rule", { price_rule: PriceRule });
+    public update(id: number, pr: PriceRule) {
+        return this.createRequest<PriceRule>("PUT", `${id}.json`, "price_rule", { price_rule: pr });
     }
 
     /**

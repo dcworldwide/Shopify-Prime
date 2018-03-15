@@ -1,11 +1,12 @@
 import { expect } from "chai";
 import * as config from "./_utils";
-import { PriceRules, PriceRuleDiscounts, Models } from "shopify-prime";
+import { PriceRules, PriceRuleDiscounts, Models } from "shopify-prime-dc";
 import PriceRule = Models.PriceRule;
 import PriceRuleDiscountCode = Models.PriceRuleDiscountCode;
 
 describe("Price Rules", function () {
-    this.timeout(30000);
+
+    this.timeout(60000);
 
     const prService: PriceRules = new PriceRules(config.shopDomain, config.accessToken);
     const prToBeDeleted: PriceRule[] = [];
@@ -57,30 +58,27 @@ describe("Price Rules", function () {
         return dc;
     }
 
-    afterEach((cb) => setTimeout(cb, 500));
+    after(async () => {
 
-    after((cb) => {
         const count = prToBeDeleted.length;
 
-        prToBeDeleted.forEach(async (pr) => {
+        for (let pr of prToBeDeleted) {
 
             // Delete children discounts
             const dcService = new PriceRuleDiscounts(config.shopDomain, config.accessToken, pr.id);
 
             if (dcToBeDeleted[pr.id]) {
-                dcToBeDeleted[pr.id].forEach(async (dc) => {
+                for (let dc of dcToBeDeleted[pr.id]) {
+                    console.log(`Delete dc ${dc.code}`)
                     await dcService.delete(dc.id)
-                });
+                }
             }
 
             // Finally, delete parent  
             await prService.delete(pr.id)
-        });
+        }
 
         console.log(`Deleted ${count} PriceRules.`);
-
-        // Wait 1 second to help empty the API rate limit bucket
-        setTimeout(cb, 1000);
     })
 
     it("should create a price rule", async () => {
@@ -116,6 +114,20 @@ describe("Price Rules", function () {
         expect(pr.id).to.be.a("number").and.to.be.gte(1);
     });
 
+    it("should get a price rule (rate limit test", async () => {
+
+        const id = (await createPriceRule()).id;
+
+        let arr = []
+        for (let i = 0; i < 50; i++) {
+            arr.push(prService.get(id));
+        }
+
+        console.time('rateTest');
+        await Promise.all(arr)
+        console.timeEnd('rateTest'); // Expect ~60 seconds
+    });
+
     it("should list PriceRules", async () => {
         await createPriceRule();
 
@@ -140,19 +152,25 @@ describe("Price Rules", function () {
     })
 
     it("should update a price rule discount code", async () => {
-        const pr = await createPriceRule();
 
-        // Create discount code 
-        const dc = await createPriceRuleDiscountCode(pr, "before")
-        expect(dc).to.be.an("object");
-        expect(dc.code).to.be.a("string");
-        expect(dc.id).to.be.a("number").and.to.be.gte(1);
+        try {
+            const pr = await createPriceRule();
 
-        // Update discount code 
-        let updatedCode = "after"
-        let dcService = new PriceRuleDiscounts(config.shopDomain, config.accessToken, pr.id);
-        let updated = await dcService.update(dc.id, { code: updatedCode })
-        expect(updated).to.be.an("object");
-        expect(updated.code).to.be.a("string").and.to.be.eq(updatedCode);
+            // Create discount code 
+            const dc = await createPriceRuleDiscountCode(pr, "before")
+            expect(dc).to.be.an("object");
+            expect(dc.code).to.be.a("string");
+            expect(dc.id).to.be.a("number").and.to.be.gte(1);
+            console.log(1)
+            // Update discount code 
+            let updatedCode = "after"
+            let dcService = new PriceRuleDiscounts(config.shopDomain, config.accessToken, pr.id);
+            let updated = await dcService.update(dc.id, { code: updatedCode })
+            expect(updated).to.be.an("object");
+            expect(updated.code).to.be.a("string").and.to.be.eq(updatedCode);
+        } catch (err) {
+            console.error(err)
+            throw err
+        }
     })
 });

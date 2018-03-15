@@ -1,7 +1,5 @@
-import { PriceRuleDiscountCode } from "../typings/models/price_rule_discount_code";
+import { PriceRuleDiscountCode, DiscountCodeBatchJob, DiscountCodeBatchJobCode } from "../typings/models/price_rule_discount_code";
 import BaseService from "../infrastructure/base_service";
-
-// Enums 
 import { FieldOptions, ListOptions } from "../typings/options/base";
 
 /**
@@ -9,11 +7,11 @@ import { FieldOptions, ListOptions } from "../typings/options/base";
  */
 export default class PriceRuleDiscounts extends BaseService {
 
-    private priceRuleId: number
+    private prId: number
 
-    constructor(shopDomain: string, accessToken: string, priceRuleId: number) {
-        super(shopDomain, accessToken, ``);
-        this.priceRuleId = priceRuleId
+    constructor(shopDomain: string, accessToken: string, prId: number) {
+        super(shopDomain, accessToken, "");
+        this.prId = prId
     }
 
     /**
@@ -21,7 +19,7 @@ export default class PriceRuleDiscounts extends BaseService {
      * @param options Options for filtering the results.
      */
     public list(options?: ListOptions) {
-        return this.createRequest<PriceRuleDiscountCode[]>("GET", `price_rules/${this.priceRuleId}/discount_codes.json`, "discount_codes", options);
+        return this.createRequest<PriceRuleDiscountCode[]>("GET", `price_rules/${this.prId}/discount_codes.json`, "discount_codes", options);
     }
 
     /**
@@ -29,14 +27,14 @@ export default class PriceRuleDiscounts extends BaseService {
      * Note: Currently, you can only create a single discount code per price rule.
      */
     public create(discount: PriceRuleDiscountCode) {
-        return this.createRequest<PriceRuleDiscountCode>("POST", `price_rules/${this.priceRuleId}/discount_codes.json`, "discount_code", { discount_code: discount });
+        return this.createRequest<PriceRuleDiscountCode>("POST", `price_rules/${this.prId}/discount_codes.json`, "discount_code", { discount_code: discount });
     }
 
     /**
      * Returns details about a single discount code object.
      */
     public get(id: number) {
-        return this.createRequest<PriceRuleDiscountCode>("GET", `price_rules/${this.priceRuleId}/discount_codes/${id}.json`, "discount_code");
+        return this.createRequest<PriceRuleDiscountCode>("GET", `price_rules/${this.prId}/discount_codes/${id}.json`, "discount_code");
     }
 
     /**
@@ -56,13 +54,49 @@ export default class PriceRuleDiscounts extends BaseService {
      * Updates a single discount code for a given price rule.
      */
     public update(id: number, discount: PriceRuleDiscountCode) {
-        return this.createRequest<PriceRuleDiscountCode>("PUT", `price_rules/${this.priceRuleId}/discount_codes/${id}.json`, "discount_code", { discount_code: discount });
+        return this.createRequest<PriceRuleDiscountCode>("PUT", `price_rules/${this.prId}/discount_codes/${id}.json`, "discount_code", { discount_code: discount });
     }
 
     /**
      * Deletes an existing discount code object.
      */
     public delete(id: number) {
-        return this.createRequest<void>("DELETE", `price_rules/${this.priceRuleId}/discount_codes/${id}.json`);
+        return this.createRequest<void>("DELETE", `price_rules/${this.prId}/discount_codes/${id}.json`);
+    }
+
+    /**
+     * Create a discount code creation job. The batch endpoint can be used to asynchronously 
+     * create up to 100 discount codes in a single request. It enqueues and returns a discount_code_creation 
+     * object that can be monitored for completion.
+     * 
+     * @param codes 
+     */
+    public createBatch(codes: { code: string }[]) {
+
+        if (codes.length > 100) {
+            throw new Error("The batch endpoint can be used to asynchronously create up to 100 discount codes in a single request")
+        }
+
+        return this.createRequest<DiscountCodeBatchJob>("POST", `price_rules/${this.prId}/batch.json`, "discount_code_creation", { discount_codes: codes });
+    }
+
+    /**
+     * Retrieve a discount code creation job
+     * 
+     * @param batchId 
+     */
+    public getBatch(batchId: number) {
+        return this.createRequest<DiscountCodeBatchJob>("GET", `price_rules/${this.prId}/batch/${batchId}.json`, "discount_code_creation");
+    }
+
+    /**
+     * Retrieve a list of discount codes associated with the discount code creation job. Discount codes 
+     * that have been successfully created include a populated ID field. Discount codes that encountered 
+     * errors during the creation process include a populated errors field.
+     * 
+     * @param batchId 
+     */
+    public getBatchCodes(batchId: number) {
+        return this.createRequest<DiscountCodeBatchJobCode[]>("GET", `price_rules/${this.prId}/batch/${batchId}/discount_codes.json`, "discount_codes");
     }
 }
