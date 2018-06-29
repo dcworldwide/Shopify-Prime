@@ -1,18 +1,17 @@
-import { Address } from "./address";
-import { TaxLine } from "./tax_line";
-import { Customer } from "./customer";
-import { ShopifyObject } from "./base";
-import { LineItem } from "./line_item";
-import { Fulfillment } from "./fulfillment";
-import { Refund } from "./refund";
-import { ShippingLine } from "./shipping_line";
-import { DiscountCode } from "./discount_code";
-import { ClientDetails } from "./client_details";
-import { PaymentDetails } from "./payment_details";
-
 // Enum imports
 import { FinancialStatus } from "../enums/financial_status";
-import { FulfillmentStatus } from "../enums/fulfillment_status";
+import { Address } from "./address";
+import { ShopifyObject } from "./base";
+import { ClientDetails } from "./client_details";
+import { Customer } from "./customer";
+import { DiscountCode } from "./discount_code";
+import { Fulfillment } from "./fulfillment";
+import { LineItem } from "./line_item";
+import { PaymentDetails } from "./payment_details";
+import { Refund } from "./refund";
+import { ShippingLine } from "./shipping_line";
+import { TaxLine } from "./tax_line";
+
 
 export interface Order extends ShopifyObject {
     /// The mailing address associated with the payment method. This address is an optional field that will not be available on orders that do not require one. 
@@ -33,6 +32,9 @@ export interface Order extends ShopifyObject {
 
     /// Unique identifier for a particular cart that is attached to a particular order.    
     cart_token?: string;
+
+    /// Unique identifier for a checkout form that is attached to a particular order.    
+    checkout_token?: string
 
     /// A <see cref="ShopifyClientDetails"/> object containing information about the client.
     client_details?: ClientDetails;
