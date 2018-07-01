@@ -1,9 +1,8 @@
-import { Product } from "../typings/models/product";
 import BaseService from "../infrastructure/base_service";
-
-// Enums
+import { Product } from "../typings/models/product";
 import { FieldOptions } from "../typings/options/base";
 import { ProductCountOptions, ProductListOptions } from "../typings/options/products";
+
 
 export default class Products extends BaseService {
     constructor(shopDomain: string, accessToken: string) {
@@ -27,72 +26,38 @@ export default class Products extends BaseService {
         return this.createRequest<Product[]>("GET", ".json", "products", options);
     }
 
-    // /**
-    //  * Gets a list of up to 250 Products from the given customer.
-    //  * @param customerId The customer's id.
-    //  * @param options Options for filtering the results.
-    //  */
-    // public listForCustomer(customerId: number, options?: ProductListOptions) {
-    //     return this.createRequest<Product[]>("GET", ".json", "products", Object.assign({ customer_id: customerId }, options));
-    // }
+    /**
+     * Gets the Product with the given id.
+     * @param productId The Product's id.
+     * @param options Options for filtering the results.
+     */
+    public get(productId: number, options?: FieldOptions) {
+        return this.createRequest<Product>("GET", `${productId}.json`, "product", options);
+    }
 
-    // /**
-    //  * Gets the Product with the given id.
-    //  * @param ProductId The Product's id.
-    //  * @param options Options for filtering the results.
-    //  */
-    // public get(ProductId: number, options?: FieldOptions) {
-    //     return this.createRequest<Product>("GET", `${ProductId}.json`, "Product", options);
-    // }
+    /**
+     * Creates an Product.
+     * @param Product The Product being created.
+     * @param options Options for creating the Product.
+     */
+    public create(product: Product) {
+        return this.createRequest<Product>("POST", ".json", "product", { product: product })
+    }
 
-    // /**
-    //  * Creates an Product.
-    //  * @param Product The Product being created.
-    //  * @param options Options for creating the Product.
-    //  */
-    // public create(Product: Product, transactions?: Transaction[], options?: ProductCreateOptions) {
-    //     return this.createRequest<Product>("POST", ".json", "Product", { Product: Object.assign({}, Product, options, { transactions }) });
-    // }
+    /**
+     * Updates an Product with the given id.
+     * @param id The Product's id.
+     * @param Product The updated Product.
+     */
+    public update(id: number, product: Product) {
+        return this.createRequest<Product>("PUT", `${id}.json`, "product", { product: product })
+    }
 
-    // /**
-    //  * Updates an Product with the given id.
-    //  * @param id The Product's id.
-    //  * @param Product The updated Product.
-    //  */
-    // public update(id: number, Product: Product) {
-    //     return this.createRequest<Product>("PUT", `${id}.json`, "Product", { Product });
-    // }
-
-    // /**
-    //  * Deletes an Product with the given id.
-    //  * @param id The Product's id.
-    //  */
-    // public delete(id: number) {
-    //     return this.createRequest<void>("DELETE", `${id}.json`);
-    // }
-
-    // /**
-    //  * Closes an Product with the given id.
-    //  * @param id The Product's id.
-    //  */
-    // public close(id: number) {
-    //     return this.createRequest<Product>("POST", `${id}/close.json`, "Product");
-    // }
-
-    // /**
-    //  * Opens an Product with the given id.
-    //  * @param id The Product's id.
-    //  */
-    // public open(id: number) {
-    //     return this.createRequest<Product>("POST", `${id}/open.json`, "Product");
-    // }
-
-    // /**
-    //  * Cancels an Product with the given id.
-    //  * @param id The Product's id.
-    //  * @param options Options for canceling the Product.
-    //  */
-    // public cancel(id: number, options?: ProductCancelOptions) {
-    //     return this.createRequest<Product>("POST", `${id}/cancel.json`, 'Product');
-    // }
+    /**
+     * Deletes an Product with the given id.
+     * @param id The Product's id.
+     */
+    public delete(id: number) {
+        return this.createRequest<void>("DELETE", `${id}.json`);
+    }
 }

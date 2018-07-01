@@ -1,4 +1,4 @@
-import { ListOptions, PublishedOptions, FieldOptions } from "./base";
+import { FieldOptions, ListOptions, PublishedOptions } from "./base";
 
 export interface ProductBaseOptions {
 
@@ -50,3 +50,4 @@ export interface ProductListOptions extends ProductBaseOptions, ProductCountOpti
 
     collection_id?: string
 }
+
