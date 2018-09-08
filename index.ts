@@ -1,48 +1,26 @@
 import * as Infrastructure from "./infrastructure";
-
-export {
-    Infrastructure,
-};
-
-// Import and export services
-import Shops from "./services/shops";
-import Blogs from "./services/blogs";
-import Orders from "./services/orders";
-import Products from "./services/products";
-import * as Auth from "./services/auth";
-import Charges from "./services/charges";
-import Articles from "./services/articles";
-import Webhooks from "./services/webhooks";
-import ScriptTags from "./services/script_tags";
-import UsageCharges from "./services/usage_charges";
-import RecurringCharges from "./services/recurring_charges";
 import ApplicationCredits from "./services/application_credits";
+import Articles from "./services/articles";
+import * as Auth from "./services/auth";
+import Blogs from "./services/blogs";
+import Charges from "./services/charges";
+import Customers from "./services/customers";
+import CustomCollections from "./services/custom_collections";
 import Discounts from "./services/discounts";
 import GiftCards from "./services/gift_cards";
-import Redirects from "./services/redirects";
+import Orders from "./services/orders";
 import PriceRules from "./services/price_rules";
 import PriceRuleDiscounts from "./services/price_rule_discounts";
-import CustomCollections from "./services/custom_collections";
+import Products from "./services/products";
+import RecurringCharges from "./services/recurring_charges";
+import Redirects from "./services/redirects";
+import ScriptTags from "./services/script_tags";
+import Shops from "./services/shops";
 import SmartCollections from "./services/smart_collections";
+import UsageCharges from "./services/usage_charges";
+import Webhooks from "./services/webhooks";
 
-export {
-    Auth,
-    Shops,
-    Blogs,
-    Orders,
-    Products,
-    Charges,
-    Articles,
-    Webhooks,
-    ScriptTags,
-    UsageCharges,
-    RecurringCharges,
-    ApplicationCredits,
-    Discounts,
-    GiftCards,
-    Redirects,
-    PriceRules,
-    PriceRuleDiscounts,
-    CustomCollections,
-    SmartCollections
-};
+export { Infrastructure, };
+export { Auth, Shops, Blogs, Customers, Orders, Products, Charges, Articles, Webhooks, ScriptTags, UsageCharges, RecurringCharges, ApplicationCredits, Discounts, GiftCards, Redirects, PriceRules, PriceRuleDiscounts, CustomCollections, SmartCollections };
+
+
