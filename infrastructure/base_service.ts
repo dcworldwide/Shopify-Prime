@@ -39,10 +39,21 @@ let jobId = 0
 
 class BaseService {
 
-    constructor(private shopDomain: string, private accessToken: string, private resource: string) {
+    private shopDomain: string
+    private accessToken: string
+    private resource: string
+    private version: string
+
+    constructor(shopDomain: string, accessToken: string, resource: string, version: string = "2019-04") {
+
+        this.shopDomain = shopDomain
+        this.accessToken = accessToken
+        this.resource = resource
+        this.version = version
+
         //Ensure resource starts with admin/
-        if (! /^[\/]?admin\//ig.test(resource)) {
-            this.resource = "admin/" + resource;
+        if (!/^[\/]?admin\//ig.test(resource)) {
+            this.resource = `admin/api/${version}/${resource}`
         }
     }
 

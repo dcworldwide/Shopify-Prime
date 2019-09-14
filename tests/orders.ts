@@ -1,6 +1,6 @@
 import { expect } from "chai";
+import { Models, Orders } from "shopify-prime";
 import * as config from "./_utils";
-import { Orders, Models } from "shopify-prime";
 import Order = Models.Order;
 
 describe("Orders", function () {
@@ -41,7 +41,7 @@ describe("Orders", function () {
             ],
             financial_status: "paid",
             total_price: 5.00,
-            email: Date.now + "@example.com",
+            email: Math.floor(Math.random()) + "@example.com",
             note: "Test note about the customer.",
         };
 
@@ -50,13 +50,11 @@ describe("Orders", function () {
 
     async function createOrder() {
         const order = await service.create(mockOrder(), undefined, { send_receipt: false, send_fulfillment_receipt: false });
-
         toBeDeleted.push(order);
-
         return order;
     }
 
-    afterEach((cb) => setTimeout(cb, 500));
+    afterEach((cb) => setTimeout(cb, 2000));
 
     after((cb) => {
         const count = toBeDeleted.length;
@@ -85,7 +83,6 @@ describe("Orders", function () {
 
     it("should create an order", async () => {
         const order = await createOrder();
-
         expect(order).to.be.an("object");
         expect(order.contact_email).to.be.a("string");
         expect(order.id).to.be.a("number").and.to.be.gte(1);
@@ -94,7 +91,6 @@ describe("Orders", function () {
     it("should get an order", async () => {
         const id = (await createOrder()).id;
         const order = await service.get(id);
-
         expect(order).to.be.an("object");
         expect(order.contact_email).to.be.a("string");
         expect(order.id).to.be.a("number").and.to.be.gte(1);
@@ -103,7 +99,6 @@ describe("Orders", function () {
     it("should get an order with only one field", async () => {
         const id = (await createOrder()).id;
         const order = await service.get(id, { fields: "id" });
-
         expect(order).to.be.an("object");
         expect(order.id).to.be.gte(1);
         expect(Object.getOwnPropertyNames(order).every(key => key === "id")).to.be.true;
@@ -111,17 +106,13 @@ describe("Orders", function () {
 
     it("should count orders", async () => {
         await createOrder();
-
         const count = await service.count();
-
         expect(count).to.be.gte(1);
     });
 
     it("should list orders", async () => {
         await createOrder();
-
         const list = await service.list();
-
         expect(Array.isArray(list)).to.be.true;
         list.forEach(order => {
             expect(order).to.be.an("object");
@@ -134,7 +125,6 @@ describe("Orders", function () {
         const id = (await createOrder()).id;
         const note = "Updated note";
         const order = await service.update(id, { note });
-
         expect(order).to.be.an("object");
         expect(order.id).to.be.gte(1);
         expect(order.note).to.equal(note);
@@ -143,18 +133,14 @@ describe("Orders", function () {
     it("should close an order", async () => {
         const id = (await createOrder()).id;
         const order = await service.close(id);
-
         expect(order).to.be.an("object");
         expect(order.closed_at).to.be.a("string").and.not.be.undefined.and.not.be.null;
     })
 
     it("should open an order", async () => {
         const id = (await createOrder()).id;
-
         await service.close(id);
-
         const order = await service.open(id);
-
         expect(order).to.be.an("object");
         expect(order.closed_at).to.satisfy((closed_at) => closed_at === null || closed_at === undefined);
     })
@@ -162,7 +148,6 @@ describe("Orders", function () {
     it("should cancel an order", async () => {
         const id = (await createOrder()).id;
         const order = await service.cancel(id);
-    
         expect(order).to.be.an("object");
         expect(order.id).to.equal(id);
     })
@@ -172,7 +157,6 @@ describe("Orders", function () {
         const order = await service.cancel(id, {
             reason: "customer",
         })
-
         expect(order).to.be.an("object");
         expect(order.id).to.equal(id);
     })
