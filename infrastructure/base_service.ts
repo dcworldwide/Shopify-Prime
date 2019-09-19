@@ -51,9 +51,12 @@ class BaseService {
         this.resource = resource
         this.version = version
 
-        //Ensure resource starts with admin/
         if (!/^[\/]?admin\//ig.test(resource)) {
-            this.resource = `admin/api/${version}/${resource}`
+            if (resource.toLowerCase().indexOf("oauth") > -1) {
+                this.resource = "admin/" + resource
+            } else {
+                this.resource = `admin/api/${version}/${resource}`
+            }
         }
     }
 
