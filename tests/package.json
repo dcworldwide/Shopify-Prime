@@ -25,7 +25,8 @@
     "test:gift_cards": "node ./node_modules/.bin/mocha built/gift_cards.js",
     "test:price_rules": "node ./node_modules/.bin/mocha built/price_rules.js",
     "test:custom_collections": "node ./node_modules/.bin/mocha built/custom_collections.js",
-    "test:smart_collections": "node ./node_modules/.bin/mocha built/smart_collections.js"
+    "test:smart_collections": "node ./node_modules/.bin/mocha built/smart_collections.js",
+    "test:country": "node ./node_modules/.bin/mocha built/country.js"
   },
   "dependencies": {
     "shopify-prime": "file:../",

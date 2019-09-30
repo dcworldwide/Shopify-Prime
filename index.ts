@@ -4,6 +4,7 @@ import Articles from "./services/articles";
 import * as Auth from "./services/auth";
 import Blogs from "./services/blogs";
 import Charges from "./services/charges";
+import Countries from "./services/countries";
 import Customers from "./services/customers";
 import CustomCollections from "./services/custom_collections";
 import Discounts from "./services/discounts";
@@ -21,6 +22,6 @@ import UsageCharges from "./services/usage_charges";
 import Webhooks from "./services/webhooks";
 
 export { Infrastructure, };
-export { Auth, Shops, Blogs, Customers, Orders, Products, Charges, Articles, Webhooks, ScriptTags, UsageCharges, RecurringCharges, ApplicationCredits, Discounts, GiftCards, Redirects, PriceRules, PriceRuleDiscounts, CustomCollections, SmartCollections };
+export { Auth, Shops, Blogs, Customers, Countries, Orders, Products, Charges, Articles, Webhooks, ScriptTags, UsageCharges, RecurringCharges, ApplicationCredits, Discounts, GiftCards, Redirects, PriceRules, PriceRuleDiscounts, CustomCollections, SmartCollections };
 
 
