@@ -3,6 +3,11 @@ import fetch from "node-fetch";
 import { resolve } from "path";
 import ShopifyError from "./shopify_error";
 const Bottleneck = require("bottleneck");
+const uuid = require('uuid/v4');
+
+export function uid() {
+    return uuid()
+}
 
 /**
  * Rate limit is 1 request per 0.5 seconds per store.
@@ -34,8 +39,6 @@ if (debug) {
         })
     })
 }
-
-let jobId = 0
 
 class BaseService {
 
@@ -75,13 +78,11 @@ class BaseService {
 
             let limiter = limiterProxy.key(this.shopDomain)
 
-            jobId = jobId >= Number.MAX_SAFE_INTEGER ? 1 : jobId++
-
             let jobOpts = {
                 priority: 5,
                 weight: 1,
                 expiration: null,
-                id: jobId
+                id: uid()
             }
 
             limiter.schedule(jobOpts, async () => {
