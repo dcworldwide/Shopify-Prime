@@ -1,23 +1,40 @@
-import { Response } from "node-fetch";
 
 export type ErrorType1 = { errors: string };
-export type ErrorType2 = { errors: { [index:string]: string | string[] } };
+export type ErrorType2 = { errors: { [index: string]: string | string[] } };
 export type ErrorType3 = { error: string, error_description: string };
 
 function isType1(err): err is ErrorType1 {
-    return err.errors && (typeof(err.errors) === "string");
+    return err.errors && (typeof (err.errors) === "string");
 }
 
 function isType2(err): err is ErrorType2 {
-    return err.errors && (typeof(err.errors) === "object");
+    return err.errors && (typeof (err.errors) === "object");
 }
 
 function isType3(err): err is ErrorType3 {
     return err.error && err.error_description;
 }
 
+// TODO
+// {
+//     "body": {
+//         "errors": "Exceeded 2 calls per second for api client. Reduce request rates to resume uninterrupted service."
+//     },
+//     "apiRateLimitReached": true,
+//         "errors": {
+//         "generic": [
+//             "Exceeded 2 calls per second for api client. Reduce request rates to resume uninterrupted service."
+//         ]
+//     },
+//     "statusCode": 429,
+//         "statusText": "Too Many Requests",
+//             "message": "[Shopify Prime] 429 Too Many Requests. "
+// }
+
 class ShopifyError extends Error {
-    constructor(response: { status: number, statusText: string}, public body: ErrorType1 | ErrorType2 | ErrorType3) {
+
+    constructor(response: { status: number, statusText: string }, public body: ErrorType1 | ErrorType2 | ErrorType3) {
+
         super();
 
         this.statusCode = response.status;

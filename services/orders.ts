@@ -1,10 +1,10 @@
-import { Order } from "../typings/models/order";
 import BaseService from "../infrastructure/base_service";
+import { Order } from "../typings/models/order";
 import { Transaction } from "../typings/models/transaction";
-
 // Enums
 import { FieldOptions } from "../typings/options/base";
-import { OrderCountOptions, OrderListOptions, OrderCreateOptions, OrderCancelOptions } from "../typings/options/orders";
+import { OrderCancelOptions, OrderCountOptions, OrderCreateOptions, OrderListOptions } from "../typings/options/orders";
+
 
 export default class Orders extends BaseService {
     constructor(shopDomain: string, accessToken: string) {

@@ -1,43 +1,80 @@
 import uri = require("jsuri");
-import fetch from "node-fetch";
+import fetch, { Response } from "node-fetch";
 import { resolve } from "path";
 import ShopifyError from "./shopify_error";
 const Bottleneck = require("bottleneck");
 const uuid = require('uuid/v4');
 
+const version = require(resolve(__dirname, "../../package.json")).version; // Get package.json from 2-levels up as this file will be in dist/infrastructure.
+const logLevel = !!process.env.SHOPIFY_PRIME_LOG_LEVEL ? parseInt(process.env.SHOPIFY_PRIME_LOG_LEVEL) : 0
+const debug = logLevel == 1 || logLevel == 2
+const debugRateLimiter = logLevel == 2
+
+const API_CALL_LIMIT = "X-Shopify-Shop-Api-Call-Limit"
+const RETRY_AFTER = "Retry-After"
+
 export function uid() {
     return uuid()
 }
 
-/**
- * Rate limit is 1 request per 0.5 seconds per store.
- */
+function log(...x) {
+    if (debug) {
+        console.info.apply(this, arguments)
+    }
+}
+
+function warn(...x) {
+    if (debug) {
+        console.warn.apply(this, arguments)
+    }
+}
+
+function error(...x) {
+    if (debug) {
+        console.error.apply(this, arguments)
+    }
+}
+
+function wait(duration = 1000) {
+    return new Promise(async (resolve) => {
+        setTimeout(() => {
+            resolve()
+        }, duration)
+    })
+}
+
+// Rate limit requests ( 1 request per 0.5 seconds per store)
+// https://github.com/SGrondin/bottleneck
 const rateLimit = 1000 / 2
 
-//Get package.json from 2-levels up as this file will be in dist/infrastructure.
-const version = require(resolve(__dirname, "../../package.json")).version;
-const debug = process.env.SHOPIFY_PRIME_DEBUG && process.env.SHOPIFY_PRIME_DEBUG == "true"
-
-// Rate limit requests
-// https://github.com/SGrondin/bottleneck
 const limiterProxy = new Bottleneck.Group({
     maxConcurrent: null,
     minTime: rateLimit
-});
+})
 
-if (debug) {
+if (debugRateLimiter) {
 
     // The 'created' event is triggered only once per limiter
     limiterProxy.on('created', (limiter, key) => {
 
         limiter.on('dropped', (dropped) => {
-            console.warn("Dropped IC request", dropped)
+            warn("Dropped IC request", dropped)
         })
 
-        limiter.on('debug', function (message, data) {
-            console.log(message, data)
+        limiter.on('debug', (message, data) => {
+            log(message, data)
         })
     })
+}
+
+interface RequestOptions {
+    headers: {
+        "Accept": string
+        "User-Agent": string
+        "X-Shopify-Access-Token"?: string
+    }
+    method: "GET" | "POST" | "PUT" | "DELETE"
+    body: undefined | string
 }
 
 class BaseService {
@@ -72,6 +109,19 @@ class BaseService {
         return headers;
     }
 
+
+    /**
+     * Fetch will only throw an exception when there is a network-related error, not when Shopify returns a non-200 response.
+     * 
+     * @param url 
+     * @param opts 
+     */
+    private async execute(url: Uri, opts: RequestOptions) {
+        log(opts.method, url.toString())
+        // log(opts)
+        return fetch(url.toString(), opts)
+    }
+
     protected createRequest<T>(method: "GET" | "POST" | "PUT" | "DELETE", path: string, rootElement?: string, payload?: Object) {
 
         return new Promise<T>((resolve, reject) => {
@@ -87,11 +137,11 @@ class BaseService {
 
             limiter.schedule(jobOpts, async () => {
 
-                debug && console.log(`${method} ${this.resource}/${path}`)
-
+                //Ensure no erroneous double slashes in path and that it doesn't end in /.json
+                let resourcePath = `${this.resource}/${path}`.replace(/\/+/ig, "/").replace(/\/\.json/ig, ".json")
                 method = method.toUpperCase() as any;
 
-                const opts = {
+                const opts: RequestOptions = {
                     headers: BaseService.buildDefaultHeaders(),
                     method: method,
                     body: undefined as string,
@@ -103,9 +153,7 @@ class BaseService {
 
                 const url = new uri(this.shopDomain);
                 url.protocol("https");
-
-                //Ensure no erroneous double slashes in path and that it doesn't end in /.json
-                url.path(`${this.resource}/${path}`.replace(/\/+/ig, "/").replace(/\/\.json/ig, ".json"));
+                url.path(resourcePath);
 
                 if ((method === "GET" || method === "DELETE") && payload) {
 
@@ -123,33 +171,64 @@ class BaseService {
 
                 }
 
-                debug && console.debug(url.toString(), opts)
-
-                //Fetch will only throw an exception when there is a network-related error, not when Shopify returns a non-200 response.
-                const result = await fetch(url.toString(), opts);
-
-                // Shopify implement 204 - no content for DELETE requests 
-                if (result.status == 204) {
-                    return resolve()
-                }
-
-                let json = await result.text() as any;
+                let res: Response
+                let json: string
 
                 try {
-                    json = JSON.parse(json);
-                } catch (e) {
-                    //Set ok to false to throw an error with the body's text.
-                    result.ok = false;
-                }
 
-                if (!result.ok) {
-                    throw new ShopifyError(result, json);
-                }
+                    res = await this.execute(url, opts)
+                    log(res.status)
 
-                resolve(rootElement ? json[rootElement] as T : json as T)
+                    if (res.status == 204) {
+                        return res
+                    }
+
+                    if (res.status == 429) {
+
+                        // Wait & retry 
+                        let retry = 1000
+
+                        if (res.headers.has(API_CALL_LIMIT)) {
+                            log(API_CALL_LIMIT, res.headers.get(API_CALL_LIMIT))
+                        }
+
+                        if (res.headers.has(RETRY_AFTER)) {
+                            try {
+                                retry = parseFloat(res.headers.get(RETRY_AFTER))
+                            }
+                            catch (err) { }
+                        }
+
+                        log("429. Waiting", retry)
+                        await wait(retry)
+                        res = await this.execute(url, opts)
+                        log(res.status)
+
+                        if (res.status == 204) {
+                            return res
+                        }
+                    }
+
+                    json = await res.text()
+
+                    try {
+                        json = JSON.parse(json);
+                    } catch (e) {
+                        res.ok = false; // Set ok to false to throw an error with the body's text.
+                    }
+
+                    if (!res.ok) {
+                        throw new ShopifyError(res, json as any);
+                    }
+
+                    resolve(rootElement ? json[rootElement] as T : json as any)
+
+                } catch (err) {
+                    throw new ShopifyError(res, json as any)
+                }
 
             }).catch(err => {
-                debug && console.error(err)
+                error(err)
                 reject(err)
             })
         })

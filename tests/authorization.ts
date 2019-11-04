@@ -70,14 +70,13 @@ describe("Shopify Prime auth functions", function () {
 
     describe(".isValidShopifyDomain", () => {
         it("should return true for a valid domain", async () => {
+            console.log(config.shopDomain)
             const isValid = await Auth.isValidShopifyDomain(config.shopDomain);
-
             expect(isValid).to.be.true;
         });
 
         it("should return false for an invalid domain", async () => {
             const isValid = await Auth.isValidShopifyDomain("example.com");
-
             expect(isValid).to.equal(false);
         })
     })
