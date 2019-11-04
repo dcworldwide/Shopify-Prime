@@ -180,7 +180,7 @@ class BaseService {
                     log(res.status)
 
                     if (res.status == 204) {
-                        return res
+                        return resolve()
                     }
 
                     if (res.status == 429) {
@@ -205,7 +205,7 @@ class BaseService {
                         log(res.status)
 
                         if (res.status == 204) {
-                            return res
+                            return resolve()
                         }
                     }
 
