@@ -10,6 +10,7 @@ const logLevel = !!process.env.SHOPIFY_PRIME_LOG_LEVEL ? parseInt(process.env.SH
 const debug = logLevel == 1 || logLevel == 2
 const debugRateLimiter = logLevel == 2
 
+const RETRY_RATE = 1000
 const API_CALL_LIMIT = "X-Shopify-Shop-Api-Call-Limit"
 const RETRY_AFTER = "Retry-After"
 
@@ -186,7 +187,7 @@ class BaseService {
                     if (res.status == 429) {
 
                         // Wait & retry 
-                        let retry = 1000
+                        let retry = RETRY_RATE
 
                         if (res.headers.has(API_CALL_LIMIT)) {
                             log(API_CALL_LIMIT, res.headers.get(API_CALL_LIMIT))
@@ -195,11 +196,14 @@ class BaseService {
                         if (res.headers.has(RETRY_AFTER)) {
                             try {
                                 retry = parseFloat(res.headers.get(RETRY_AFTER))
+                                if (isNaN(retry)) {
+                                    retry = RETRY_RATE
+                                }
                             }
                             catch (err) { }
                         }
 
-                        log("429. Waiting", retry)
+                        warn("429. Waiting", retry)
                         await wait(retry)
                         res = await this.execute(url, opts)
                         log(res.status)
