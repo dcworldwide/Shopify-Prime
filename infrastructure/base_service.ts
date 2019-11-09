@@ -25,15 +25,11 @@ function log(...x) {
 }
 
 function warn(...x) {
-    if (debug) {
-        console.warn.apply(this, arguments)
-    }
+    console.info.apply(this, arguments)
 }
 
 function error(...x) {
-    if (debug) {
-        console.error.apply(this, arguments)
-    }
+    console.error.apply(this, arguments)
 }
 
 function wait(duration = 1000) {
@@ -59,7 +55,7 @@ if (debugRateLimiter) {
     limiterProxy.on('created', (limiter, key) => {
 
         limiter.on('dropped', (dropped) => {
-            warn("Dropped IC request", dropped)
+            log("Dropped IC request", dropped)
         })
 
         limiter.on('debug', (message, data) => {
@@ -203,7 +199,7 @@ class BaseService {
                             catch (err) { }
                         }
 
-                        warn("429. Waiting", retry)
+                        log("429. Waiting", retry)
                         await wait(retry)
                         res = await this.execute(url, opts)
                         log(res.status)
@@ -232,7 +228,7 @@ class BaseService {
                 }
 
             }).catch(err => {
-                error(err)
+                log(err)
                 reject(err)
             })
         })
