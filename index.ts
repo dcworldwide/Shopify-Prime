@@ -10,6 +10,7 @@ import CustomCollections from "./services/custom_collections";
 import Discounts from "./services/discounts";
 import GiftCards from "./services/gift_cards";
 import Orders from "./services/orders";
+import Pages from "./services/pages";
 import PriceRules from "./services/price_rules";
 import PriceRuleDiscounts from "./services/price_rule_discounts";
 import Products from "./services/products";
@@ -22,6 +23,6 @@ import UsageCharges from "./services/usage_charges";
 import Webhooks from "./services/webhooks";
 
 export { Infrastructure, };
-export { Auth, Shops, Blogs, Customers, Countries, Orders, Products, Charges, Articles, Webhooks, ScriptTags, UsageCharges, RecurringCharges, ApplicationCredits, Discounts, GiftCards, Redirects, PriceRules, PriceRuleDiscounts, CustomCollections, SmartCollections };
+export { Auth, Shops, Blogs, Customers, Countries, Orders, Products, Charges, Articles, Webhooks, ScriptTags, UsageCharges, RecurringCharges, ApplicationCredits, Discounts, GiftCards, Redirects, PriceRules, PriceRuleDiscounts, CustomCollections, SmartCollections, Pages };
 
 
