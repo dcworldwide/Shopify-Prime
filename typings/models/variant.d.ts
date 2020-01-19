@@ -46,6 +46,8 @@ export interface Variant extends ShopifyObject {
      */
     weight_unit: string;
 
+    inventory_item_id: number;
+
     /**
      * Specifies whether or not Shopify tracks the number of items in stock for this product variant.
      */
