@@ -1,6 +1,6 @@
-import { TaxLine } from "./tax_line";
 import { ShopifyObject } from "./base";
 import { LineItemProperty } from "./line_item_property";
+import { TaxLine } from "./tax_line";
 
 export interface LineItem extends ShopifyObject {
     /// <summary>
@@ -63,6 +63,10 @@ export interface LineItem extends ShopifyObject {
     /// The title of the product variant. Can be null if the product purchased is not a variant.
     /// </summary>
     variant_title?: string;
+
+    // // This fields do not exist within the shopify model. But we have added them
+    // inventory_item_id?: number
+    // inventory_cost?: number
 
     /// <summary>
     /// The name of the product variant.
