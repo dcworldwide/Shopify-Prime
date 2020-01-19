@@ -64,9 +64,9 @@ export interface LineItem extends ShopifyObject {
     /// </summary>
     variant_title?: string;
 
-    // // This fields do not exist within the shopify model. But we have added them
-    // inventory_item_id?: number
-    // inventory_cost?: number
+    // Non-shopify fields. Application must populate these fields
+    inventory_item_id?: number
+    inventory_cost?: number
 
     /// <summary>
     /// The name of the product variant.
