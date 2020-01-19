@@ -66,7 +66,7 @@ export interface LineItem extends ShopifyObject {
 
     // Non-shopify fields. Application must populate these fields
     inventory_item_id?: number
-    inventory_cost?: number
+    inventory_cost?: string
 
     /// <summary>
     /// The name of the product variant.
