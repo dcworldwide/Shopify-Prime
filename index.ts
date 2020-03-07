@@ -23,7 +23,7 @@ import SmartCollections from "./services/smart_collections";
 import UsageCharges from "./services/usage_charges";
 import Webhooks from "./services/webhooks";
 
-export { Infrastructure, };
+export { Infrastructure };
 export { Auth, Shops, Blogs, Customers, Countries, Orders, Products, InventoryItems, Charges, Articles, Webhooks, ScriptTags, UsageCharges, RecurringCharges, ApplicationCredits, Discounts, GiftCards, Redirects, PriceRules, PriceRuleDiscounts, CustomCollections, SmartCollections, Pages };
 
 
