@@ -1,5 +1,6 @@
 import { expect } from "chai"
 import { Models, Orders } from "shopify-prime-dc"
+import { PageResult } from "shopify-prime-dc/dist/infrastructure/base_service"
 import * as config from "./_utils"
 import Order = Models.Order
 
@@ -101,8 +102,6 @@ describe("Orders", function () {
     })
 
     it("should page orders", async () => {
-
-        type PageResult<T> = { next: string, prev: string, data: T }
 
         let page: PageResult<Models.Order[]>
         let i = 0
