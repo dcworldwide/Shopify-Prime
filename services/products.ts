@@ -26,6 +26,10 @@ export default class Products extends BaseService {
         return this.createRequest<Product[]>("GET", ".json", "products", options);
     }
 
+    public page(options?: ProductListOptions) {
+        return this.createRequest2<Product[]>("GET", ".json", "products", options);
+    }
+
     /**
      * Gets the Product with the given id.
      * @param productId The Product's id.

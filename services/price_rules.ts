@@ -1,7 +1,7 @@
-import { PriceRule } from "../typings/models/price_rule";
 import BaseService from "../infrastructure/base_service";
+import { PriceRule } from "../typings/models/price_rule";
+import { DateOptions, FieldOptions, ListOptions } from "../typings/options/base";
 import { PriceRuleOptions } from "../typings/options/price_rules";
-import { FieldOptions, ListOptions, DateOptions } from "../typings/options/base";
 
 /**
  * A service for manipulating Shopify Price Rules.
@@ -18,6 +18,10 @@ export default class PriceRules extends BaseService {
      */
     public list(options?: PriceRuleOptions & ListOptions & FieldOptions & DateOptions) {
         return this.createRequest<PriceRule[]>("GET", ".json", "price_rules", options);
+    }
+
+    public page(options?: PriceRuleOptions & ListOptions & FieldOptions & DateOptions) {
+        return this.createRequest2<PriceRule[]>("GET", ".json", "price_rules", options);
     }
 
     /**

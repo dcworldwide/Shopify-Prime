@@ -27,7 +27,7 @@ export default class Orders extends BaseService {
         return this.createRequest<Order[]>("GET", ".json", "orders", options);
     }
 
-    public async page(options?: OrderListOptions) {
+    public page(options?: OrderListOptions) {
         return this.createRequest2<Order[]>("GET", ".json", "orders", options);
     }
 
