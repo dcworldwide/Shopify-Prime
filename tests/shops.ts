@@ -1,16 +1,16 @@
 import { expect } from "chai";
-import { Shops, Models } from "shopify-prime";
+import { Models, Shops } from "shopify-prime-dc";
 import * as config from "./_utils";
 import Shop = Models.Shop;
 
 describe("Shops", function () {
     this.timeout(30000);
-    
+
     const service = new Shops(config.shopDomain, config.accessToken);
 
     after((cb) => {
         // Wait 1 second to help empty the API rate limit bucket
-        setTimeout(cb, 1000);    
+        setTimeout(cb, 1000);
     })
 
     it("should get a shop", async () => {

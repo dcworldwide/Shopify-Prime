@@ -1,6 +1,6 @@
 import { expect } from "chai";
+import { ApplicationCredits } from "shopify-prime-dc";
 import * as config from "./_utils";
-import { ApplicationCredits } from "shopify-prime";
 
 describe("Application Credits", function () {
     this.timeout(30000);

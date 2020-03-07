@@ -1,6 +1,4 @@
-import { expect } from "chai";
-import * as config from "./_utils";
-import { Discounts, Models } from "shopify-prime";
+import { Models } from "shopify-prime-dc";
 import Discount = Models.Discount;
 
 describe("Discounts", function () {

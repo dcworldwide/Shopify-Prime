@@ -1,6 +1,6 @@
 import { expect } from "chai";
+import { Models, Webhooks } from "shopify-prime-dc";
 import * as config from "./_utils";
-import { Webhooks, Models } from "shopify-prime";
 import Webhook = Models.Webhook;
 
 describe("Webhooks", function () {
@@ -80,7 +80,7 @@ describe("Webhooks", function () {
     })
 
     it("should count webhooks", async () => {
-        toBeDeleted.push(await service.create(createWebhook()));        
+        toBeDeleted.push(await service.create(createWebhook()));
 
         const count = await service.count();
 
@@ -89,7 +89,7 @@ describe("Webhooks", function () {
     })
 
     it("should list webhooks", async () => {
-        toBeDeleted.push(await service.create(createWebhook()));        
+        toBeDeleted.push(await service.create(createWebhook()));
 
         const list = await service.list();
 

@@ -1,5 +1,5 @@
 import { expect } from "chai"
-import { Models, Orders } from "shopify-prime"
+import { Models, Orders } from "shopify-prime-dc"
 import * as config from "./_utils"
 import Order = Models.Order
 
@@ -98,6 +98,48 @@ describe("Orders", function () {
             expect(order.id).to.be.gte(1)
             expect(order.contact_email).to.be.a("string")
         })
+    })
+
+    it("should page orders", async () => {
+
+        type PageResult<T> = { next: string, prev: string, data: T }
+
+        let page: PageResult<Models.Order[]>
+        let i = 0
+        let limit = 1
+        let read = new Set()
+
+        while (true) {
+
+            page = await service.page(page ? { limit, page_info: page.next } : { limit })
+
+            console.log({
+                i,
+                prev: page && page.prev,
+                next: page && page.next,
+                length: page && page.data.length,
+                number: page && page.data[0].order_number
+            })
+
+            expect(page).is.not.null
+            expect(page.next).is.not.undefined
+            expect(page.data.length).eq(limit)
+            expect(read.has(page.data[0].order_number)).to.be.false
+
+            if (i == 0) {
+                expect(page.prev).is.undefined
+            } else {
+                expect(page.prev).is.not.undefined
+                expect(page.prev).is.not.eq(page.next)
+            }
+
+            i++
+            read.add(page.data[0].order_number)
+
+            if (i == 5 || !page.next) break
+        }
+
+        // throw new Error("stop")
     })
 
     it("should update an order", async () => {

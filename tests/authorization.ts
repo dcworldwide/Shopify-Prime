@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Auth } from "shopify-prime";
+import { Auth } from "shopify-prime-dc";
 import * as config from "./_utils";
 
 describe("Shopify Prime auth functions", function () {

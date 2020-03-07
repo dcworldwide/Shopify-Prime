@@ -1,6 +1,6 @@
 import { expect } from "chai";
+import { Articles, Blogs, Models } from "shopify-prime-dc";
 import * as config from "./_utils";
-import { Articles, Blogs, Models } from "shopify-prime";
 
 describe("Articles", function () {
     this.timeout(30000);

@@ -1,6 +1,6 @@
 import { expect } from "chai";
+import { Models, Products } from "shopify-prime-dc";
 import * as config from "./_utils";
-import { Products, Models } from "shopify-prime";
 import Product = Models.Product;
 
 describe("Products", function () {

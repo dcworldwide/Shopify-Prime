@@ -1,6 +1,3 @@
-import { expect } from "chai";
-import * as config from "./_utils";
-import { Charges } from "shopify-prime";
 
 describe("Charges", function () {
     it("should list charges, but cannot be tested with a private app.");

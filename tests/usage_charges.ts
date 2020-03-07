@@ -1,6 +1,4 @@
-import { expect } from "chai";
-import * as config from "./_utils";
-import { UsageCharges, Models } from "shopify-prime";
+import { Models } from "shopify-prime-dc";
 import UsageCharge = Models.UsageCharge;
 
 describe("UsageCharges", function () {

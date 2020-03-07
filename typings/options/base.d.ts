@@ -48,14 +48,14 @@ export interface ListOptions {
     limit?: number;
 
     /**
-     * The page number of the result list to retrieve. Use this in tandem with limit to page through the webhooks in a shop.
-     */
-    page?: number;
-
-    /**
      * Restricts results to those created after the given id.
      */
     since_id?: number;
+
+    /**
+     * UID for the next page of results
+     */
+    page_info?: string
 }
 
 export interface PublishedOptions {

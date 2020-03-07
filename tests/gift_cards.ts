@@ -1,6 +1,4 @@
-import { expect } from "chai";
-import * as config from "./_utils";
-import { GiftCards, Models } from "shopify-prime";
+import { Models } from "shopify-prime-dc";
 import GiftCard = Models.GiftCard;
 
 describe("Gift Cards", function () {

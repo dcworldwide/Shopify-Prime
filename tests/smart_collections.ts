@@ -1,6 +1,6 @@
 import { expect } from "chai";
+import { Models, SmartCollections } from "shopify-prime-dc";
 import * as config from "./_utils";
-import { SmartCollections, Products, Models } from "shopify-prime";
 import Product = Models.Product;
 import SmartCollection = Models.SmartCollection;
 

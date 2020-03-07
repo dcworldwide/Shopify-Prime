@@ -1,6 +1,6 @@
 import { expect } from "chai";
+import { Models, Redirects } from "shopify-prime-dc";
 import * as config from "./_utils";
-import { Redirects, Models } from "shopify-prime";
 import Redirect = Models.Redirect;
 
 describe("Redirects", function () {

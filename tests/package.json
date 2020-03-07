@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "clean": "rm -rf built node_modules && cd ../ npm run clean",
     "build": "node ./node_modules/.bin/tsc -p .",
     "build:lib": "cd ../ && npm run build && cd ./tests && rm -rf built && tsc",
     "refresh": "npm run build:lib && yarn cache clean && rm -rf node_modules && yarn add file:../",
@@ -29,14 +30,13 @@
     "test:country": "node ./node_modules/.bin/mocha built/country.js"
   },
   "dependencies": {
-    "shopify-prime": "file:../",
     "shopify-prime-dc": "file:../"
   },
   "devDependencies": {
-    "@types/chai": "^3.4.34",
-    "@types/mocha": "^2.2.32",
+    "@types/chai": "^3.5.2",
+    "@types/mocha": "^2.2.48",
     "chai": "^3.5.0",
-    "mocha": "^3.1.2",
-    "typescript": "2.1.4"
+    "mocha": "^3.5.3",
+    "typescript": "^2.1.4"
   }
 }

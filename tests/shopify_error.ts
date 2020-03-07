@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Infrastructure } from "shopify-prime";
+import { Infrastructure } from "shopify-prime-dc";
 import ShopifyError = Infrastructure.ShopifyError;
 
 describe("ShopifyError", function () {
@@ -14,7 +14,7 @@ describe("ShopifyError", function () {
         url: "",
     } as any;
 
-    const rateLimitResponse = Object.assign({}, genericResponse, { statusText: "Too Many Requests", size: "Too Many Requests".length, status: 429 /* Too Many Requests */});
+    const rateLimitResponse = Object.assign({}, genericResponse, { statusText: "Too Many Requests", size: "Too Many Requests".length, status: 429 /* Too Many Requests */ });
 
     const genericError = new ShopifyError(genericResponse, {
         errors: {
@@ -46,7 +46,7 @@ describe("ShopifyError", function () {
 
     it("should set the .apiRateLimitReached flag to true", () => {
         expect(rateLimitError.statusCode).to.equal(429);
-        expect(rateLimitError.apiRateLimitReached).to.be.true;  
+        expect(rateLimitError.apiRateLimitReached).to.be.true;
     })
 
     it("should have an errors object", () => {

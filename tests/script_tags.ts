@@ -1,6 +1,6 @@
 import { expect } from "chai";
+import { Models, ScriptTags } from "shopify-prime-dc";
 import * as config from "./_utils";
-import { ScriptTags, Models } from "shopify-prime";
 import ScriptTag = Models.ScriptTag;
 
 describe("Script Tags", function () {

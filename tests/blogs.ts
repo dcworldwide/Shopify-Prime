@@ -1,6 +1,6 @@
 import { expect } from "chai";
+import { Blogs, Models } from "shopify-prime-dc";
 import * as config from "./_utils";
-import { Blogs, Models } from "shopify-prime";
 
 describe("Blogs", async function () {
     this.timeout(30000);
@@ -36,7 +36,7 @@ describe("Blogs", async function () {
 
         expect(blog).to.be.an("object");
         expect(blog.title).to.contain("Shopify Prime Test Blog - ");
-        expect(blog.commentable).to.equal("moderate");        
+        expect(blog.commentable).to.equal("moderate");
     })
 
     it("should get a blog", async () => {
@@ -51,7 +51,7 @@ describe("Blogs", async function () {
     it("should update a blog", async () => {
         const title = "My Updated Title";
         const id = (await createBlog()).id;
-        const blog = await service.update(id, {title});
+        const blog = await service.update(id, { title });
 
         expect(blog).to.be.an("object");
         expect(blog.title).to.equal(title);

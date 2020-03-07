@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Countries, Models } from "shopify-prime";
+import { Countries, Models } from "shopify-prime-dc";
 import * as config from "./_utils";
 import Country = Models.Country
 
