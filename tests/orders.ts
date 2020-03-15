@@ -106,7 +106,7 @@ describe("Orders", function () {
         let page: PageResult<Models.Order[]>
         let i = 0
         let limit = 1
-        let read = new Set()
+        let read = new Set<number>()
 
         while (true) {
 
