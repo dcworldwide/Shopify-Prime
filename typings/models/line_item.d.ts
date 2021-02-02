@@ -1,4 +1,5 @@
 import { ShopifyObject } from "./base";
+import { DiscountAllocation } from "./discount_allocation";
 import { LineItemProperty } from "./line_item_property";
 import { TaxLine } from "./tax_line";
 
@@ -92,6 +93,8 @@ export interface LineItem extends ShopifyObject {
     /// An array of <see cref="ShopifyTaxLine"/> objects, each of which details the taxes applicable to this <see cref="ShopifyLineItem"/>.
     /// </summary>
     tax_lines?: TaxLine[];
+
+    discount_allocations?: DiscountAllocation[];
 
     /// <summary>
     /// The total discount amount applied to this line item. This value is not subtracted in the line item price.
