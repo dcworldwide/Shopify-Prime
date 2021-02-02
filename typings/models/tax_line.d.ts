@@ -4,7 +4,7 @@ export interface TaxLine extends ShopifyObject {
     /**
      * The amount of tax to be charged.
      */
-    price?: number;
+    price?: string;
 
     /**
      * The rate of tax to be applied.

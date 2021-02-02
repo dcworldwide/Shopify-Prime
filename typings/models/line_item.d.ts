@@ -28,7 +28,7 @@ export interface LineItem extends ShopifyObject {
     /// The price of the item before discounts have been applied.
     /// </summary>
     /// <remarks>Shopify returns this value as a string.</remarks>
-    price?: number;
+    price?: string;
 
     /// <summary>
     /// The unique numeric identifier for the product in the fulfillment. Can be null if the original product associated with the order is deleted at a later date
@@ -99,7 +99,7 @@ export interface LineItem extends ShopifyObject {
     /// <summary>
     /// The total discount amount applied to this line item. This value is not subtracted in the line item price.
     /// </summary>
-    total_discount?: number;
+    total_discount?: string;
 
     /// <summary>
     /// An array of custom information for an item that has been added to the cart.
