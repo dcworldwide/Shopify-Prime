@@ -1,4 +1,5 @@
 import { ShopifyObject } from "./base";
+import { RefundLineItem } from "./refund_line_item";
 import { Transaction } from "./transaction";
 
 export interface Refund extends ShopifyObject {
@@ -6,10 +7,10 @@ export interface Refund extends ShopifyObject {
     order_id: any;
     created_at?: string;
     note: string;
-    restock?: any;
+    restock?: boolean;
     user_id: number;
     processed_at?: string;
-    refund_line_items: any[];
+    refund_line_items: RefundLineItem[];
     transactions: Transaction[];
     order_adjustments: OrderAdjustment[];
 }
