@@ -35,7 +35,7 @@ function error(...x) {
 }
 
 function wait(duration = 1000) {
-    return new Promise(async (resolve) => {
+    return new Promise<void>(async (resolve) => {
         setTimeout(() => {
             resolve()
         }, duration)
@@ -83,7 +83,7 @@ class BaseService {
     private resource: string
     private version: string
 
-    constructor(shopDomain: string, accessToken: string, resource: string, version: string = "2020-01") {
+    constructor(shopDomain: string, accessToken: string, resource: string, version: string = "2020-07") {
 
         this.shopDomain = shopDomain
         this.accessToken = accessToken
@@ -121,7 +121,7 @@ class BaseService {
 
     protected createRequest<T>(method: "GET" | "POST" | "PUT" | "DELETE", path: string, rootElement?: string, payload?: Object) {
 
-        return new Promise<T>((resolve, reject) => {
+        return new Promise<T | void>((resolve, reject) => {
 
             let limiter = limiterProxy.key(this.shopDomain)
 
@@ -236,7 +236,7 @@ class BaseService {
 
     protected createRequest2<T>(method: "GET", path: string, rootElement?: string, payload?: Object) {
 
-        return new Promise<PageResult<T>>((resolve, reject) => {
+        return new Promise<PageResult<T> | void>((resolve, reject) => {
 
             let limiter = limiterProxy.key(this.shopDomain)
 
