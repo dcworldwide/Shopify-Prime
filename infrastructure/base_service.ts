@@ -121,7 +121,7 @@ class BaseService {
 
     protected createRequest<T>(method: "GET" | "POST" | "PUT" | "DELETE", path: string, rootElement?: string, payload?: Object) {
 
-        return new Promise<T | void>((resolve, reject) => {
+        return new Promise<T>((resolve, reject) => {
 
             let limiter = limiterProxy.key(this.shopDomain)
 
@@ -177,7 +177,7 @@ class BaseService {
                     log(res.status)
 
                     if (res.status == 204) {
-                        return resolve()
+                        return resolve(undefined)
                     }
 
                     if (res.status == 429) {
@@ -205,7 +205,7 @@ class BaseService {
                         log(res.status)
 
                         if (res.status == 204) {
-                            return resolve()
+                            return resolve(undefined)
                         }
                     }
 
@@ -236,7 +236,7 @@ class BaseService {
 
     protected createRequest2<T>(method: "GET", path: string, rootElement?: string, payload?: Object) {
 
-        return new Promise<PageResult<T> | void>((resolve, reject) => {
+        return new Promise<PageResult<T>>((resolve, reject) => {
 
             let limiter = limiterProxy.key(this.shopDomain)
 
@@ -294,7 +294,7 @@ class BaseService {
                     log(res.status)
 
                     if (res.status == 204) {
-                        return resolve()
+                        return resolve(undefined)
                     }
 
                     if (res.status == 429) {
@@ -322,7 +322,7 @@ class BaseService {
                         log(res.status)
 
                         if (res.status == 204) {
-                            return resolve()
+                            return resolve(undefined)
                         }
                     }
 
