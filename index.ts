@@ -6,6 +6,7 @@ import Blogs from "./services/blogs";
 import Charges from "./services/charges";
 import Countries from "./services/countries";
 import Customers from "./services/customers";
+import CustomerSavedSearches from "./services/customer_saved_search";
 import CustomCollections from "./services/custom_collections";
 import Discounts from "./services/discounts";
 import GiftCards from "./services/gift_cards";
@@ -24,6 +25,6 @@ import UsageCharges from "./services/usage_charges";
 import Webhooks from "./services/webhooks";
 
 export { Infrastructure };
-export { Auth, Shops, Blogs, Customers, Countries, Orders, Products, InventoryItems, Charges, Articles, Webhooks, ScriptTags, UsageCharges, RecurringCharges, ApplicationCredits, Discounts, GiftCards, Redirects, PriceRules, PriceRuleDiscounts, CustomCollections, SmartCollections, Pages };
+export { Auth, Shops, Blogs, Customers, CustomerSavedSearches, Countries, Orders, Products, InventoryItems, Charges, Articles, Webhooks, ScriptTags, UsageCharges, RecurringCharges, ApplicationCredits, Discounts, GiftCards, Redirects, PriceRules, PriceRuleDiscounts, CustomCollections, SmartCollections, Pages };
 
 

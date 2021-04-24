@@ -10,7 +10,7 @@ const logLevel = !!process.env.SHOPIFY_PRIME_LOG_LEVEL ? parseInt(process.env.SH
 const debug = logLevel == 1 || logLevel == 2
 const debugRateLimiter = logLevel == 2
 
-const RETRY_RATE = 1000
+const RETRY_RATE = 1500
 const API_CALL_LIMIT = "X-Shopify-Shop-Api-Call-Limit"
 const RETRY_AFTER = "Retry-After"
 

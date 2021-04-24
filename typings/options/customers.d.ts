@@ -14,3 +14,7 @@ export interface CustomerSearchOptions extends FieldOptions, ListOptions {
      */
     order: string
 }
+
+export interface CustomerSavedSearchListOptions extends FieldOptions, ListOptions {
+
+}
