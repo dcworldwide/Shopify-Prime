@@ -27,11 +27,11 @@ export default class CustomerSavedSearches extends BaseService {
     }
 
     public create(args: { name: string, query: string }) {
-        return this.createRequest<CustomerSavedSearch>("POST", ".json", "customer_saved_search", args);
+        return this.createRequest<CustomerSavedSearch>("POST", ".json", "customer_saved_search", { customer_saved_search: args });
     }
 
-    public update(id: number, name: string, query: string) {
-        return this.createRequest<CustomerSavedSearch>("PUT", `${id}.json`, "customer_saved_search", { id, name, query });
+    public update(args: { id: number, name: string, query: string }) {
+        return this.createRequest<CustomerSavedSearch>("PUT", `${args.id}.json`, "customer_saved_search", { customer_saved_search: args });
     }
 
     public delete(id: number) {
