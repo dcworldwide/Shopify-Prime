@@ -126,4 +126,16 @@ export interface PriceRule extends ShopifyObject {
      * The date and time when the price rule was last updated.
      */
     updated_at?: string
+
+    /**
+     * Buy X get Y fields 
+     */
+    prerequisite_product_ids?: number[]
+    prerequisite_variant_ids?: number[]
+    prerequisite_collection_ids?: number[]
+    allocation_limit?: number
+    prerequisite_to_entitlement_quantity_ratio?: {
+        prerequisite_quantity: number
+        entitled_quantity: number
+    }
 }
