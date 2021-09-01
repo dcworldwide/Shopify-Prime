@@ -42,7 +42,7 @@ function wait(duration = 1000) {
     })
 }
 
-// Rate limit requests ( 1 request per 0.5 seconds per store)
+// Rate limit requests (1 request per 0.5 seconds per store)
 // https://github.com/SGrondin/bottleneck
 const rateLimit = 1000 / 2
 
