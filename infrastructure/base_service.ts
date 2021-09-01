@@ -83,7 +83,7 @@ class BaseService {
     private resource: string
     private version: string
 
-    constructor(shopDomain: string, accessToken: string, resource: string, version: string = "2020-07") {
+    constructor(shopDomain: string, accessToken: string, resource: string, version: string = "2021-01") {
 
         this.shopDomain = shopDomain
         this.accessToken = accessToken
