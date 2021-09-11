@@ -20,7 +20,6 @@ describe("Shops", function () {
         expect(shop.name).to.be.a("string");
         expect(shop.domain).to.be.a("string");
         expect(shop.address1).to.be.a("string");
-        expect(shop.force_ssl).to.be.a("boolean");
         expect(shop.shop_owner).to.be.a("string");
         expect(shop.myshopify_domain).to.be.a("string");
     });
@@ -34,4 +33,4 @@ describe("Shops", function () {
     })
 
     it("should force uninstall the app, but cannot be tested with a private app");
-}) 
+})

@@ -65,11 +65,6 @@ export interface Shop extends ShopifyObject {
     email?: string;
 
     /**
-     * Indicates whether the shop forces requests made to its resources to be made over SSL, using the HTTPS protocol. If true, HTTP requests will be redirected to HTTPS.
-     */
-    force_ssl?: boolean;
-
-    /**
      * Present when a shop has a google app domain. It will be returned as a URL, else null. 
      */
     google_apps_domain?: string;
