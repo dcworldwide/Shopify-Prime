@@ -32,7 +32,7 @@ export default class Customers extends BaseService {
      * @param options Options for filtering the results.
      */
     public search(options?: CustomerSearchOptions) {
-        return this.createRequest<Customer[]>("GET", ".json", "customers", options);
+        return this.createRequest<Customer[]>("GET", "search.json", "customers", options);
     }
 
     /**
