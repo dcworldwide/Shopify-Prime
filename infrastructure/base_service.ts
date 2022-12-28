@@ -1,11 +1,11 @@
-import uri = require("jsuri");
-import fetch, { Response } from "node-fetch";
-import { resolve } from "path";
-import ShopifyError from "./shopify_error";
-const Bottleneck = require("bottleneck");
-const uuid = require('uuid/v4');
+import uri = require("jsuri")
+import fetch, { Response } from "node-fetch"
+import { resolve } from "path"
+import ShopifyError from "./shopify_error"
+const Bottleneck = require("bottleneck")
+const uuid = require('uuid/v4')
 
-const version = require(resolve(__dirname, "../../package.json")).version; // Get package.json from 2-levels up as this file will be in dist/infrastructure.
+const version = require(resolve(__dirname, "../../package.json")).version // Get package.json from 2-levels up as this file will be in dist/infrastructure.
 const logLevel = !!process.env.SHOPIFY_PRIME_LOG_LEVEL ? parseInt(process.env.SHOPIFY_PRIME_LOG_LEVEL) : 0
 const debug = logLevel == 1 || logLevel == 2
 const debugRateLimiter = logLevel == 2
@@ -83,7 +83,7 @@ class BaseService {
     private resource: string
     private version: string
 
-    constructor(shopDomain: string, accessToken: string, resource: string, version: string = "2021-10") {
+    constructor(shopDomain: string, accessToken: string, resource: string, version: string = "2022-07") {
 
         this.shopDomain = shopDomain
         this.accessToken = accessToken
@@ -104,7 +104,7 @@ class BaseService {
             "Accept": "application/json",
             "User-Agent": `Shopify Prime ${version} (https://github.com/nozzlegear/shopify-prime)`
         }
-        return headers;
+        return headers
     }
 
 
@@ -136,7 +136,7 @@ class BaseService {
 
                 //Ensure no erroneous double slashes in path and that it doesn't end in /.json
                 let resourcePath = `${this.resource}/${path}`.replace(/\/+/ig, "/").replace(/\/\.json/ig, ".json")
-                method = method.toUpperCase() as any;
+                method = method.toUpperCase() as any
 
                 const opts: RequestOptions = {
                     headers: BaseService.buildDefaultHeaders(),
@@ -145,26 +145,26 @@ class BaseService {
                 }
 
                 if (this.accessToken) {
-                    opts.headers["X-Shopify-Access-Token"] = this.accessToken;
+                    opts.headers["X-Shopify-Access-Token"] = this.accessToken
                 }
 
-                const url = new uri(this.shopDomain);
-                url.protocol("https");
-                url.path(resourcePath);
+                const url = new uri(this.shopDomain)
+                url.protocol("https")
+                url.path(resourcePath)
 
                 if ((method === "GET" || method === "DELETE") && payload) {
 
                     for (const prop in payload) {
-                        const value = payload[prop];
+                        const value = payload[prop]
 
                         // Shopify expects qs array values to be joined by a comma, e.g. fields=field1,field2,field3
-                        url.addQueryParam(prop, Array.isArray(value) ? value.join(",") : value);
+                        url.addQueryParam(prop, Array.isArray(value) ? value.join(",") : value)
                     }
 
                 } else if (payload) {
 
-                    opts.body = JSON.stringify(payload);
-                    opts.headers["Content-Type"] = "application/json";
+                    opts.body = JSON.stringify(payload)
+                    opts.headers["Content-Type"] = "application/json"
 
                 }
 
@@ -212,13 +212,13 @@ class BaseService {
                     json = await res.text()
 
                     try {
-                        json = JSON.parse(json);
+                        json = JSON.parse(json)
                     } catch (e) {
-                        res.ok = false; // Set ok to false to throw an error with the body's text.
+                        res.ok = false // Set ok to false to throw an error with the body's text.
                     }
 
                     if (!res.ok) {
-                        throw new ShopifyError(res, json as any);
+                        throw new ShopifyError(res, json as any)
                     }
 
                     resolve(rootElement ? json[rootElement] as T : json as any)
@@ -251,7 +251,7 @@ class BaseService {
 
                 //Ensure no erroneous double slashes in path and that it doesn't end in /.json
                 let resourcePath = `${this.resource}/${path}`.replace(/\/+/ig, "/").replace(/\/\.json/ig, ".json")
-                method = method.toUpperCase() as any;
+                method = method.toUpperCase() as any
 
                 const opts: RequestOptions = {
                     headers: BaseService.buildDefaultHeaders(),
@@ -260,26 +260,26 @@ class BaseService {
                 }
 
                 if (this.accessToken) {
-                    opts.headers["X-Shopify-Access-Token"] = this.accessToken;
+                    opts.headers["X-Shopify-Access-Token"] = this.accessToken
                 }
 
-                const url = new uri(this.shopDomain);
-                url.protocol("https");
-                url.path(resourcePath);
+                const url = new uri(this.shopDomain)
+                url.protocol("https")
+                url.path(resourcePath)
 
                 if ((method === "GET" || method === "DELETE") && payload) {
 
                     for (const prop in payload) {
-                        const value = payload[prop];
+                        const value = payload[prop]
 
                         // Shopify expects qs array values to be joined by a comma, e.g. fields=field1,field2,field3
-                        url.addQueryParam(prop, Array.isArray(value) ? value.join(",") : value);
+                        url.addQueryParam(prop, Array.isArray(value) ? value.join(",") : value)
                     }
 
                 } else if (payload) {
 
-                    opts.body = JSON.stringify(payload);
-                    opts.headers["Content-Type"] = "application/json";
+                    opts.body = JSON.stringify(payload)
+                    opts.headers["Content-Type"] = "application/json"
 
                 }
 
@@ -329,13 +329,13 @@ class BaseService {
                     json = await res.text()
 
                     try {
-                        json = JSON.parse(json);
+                        json = JSON.parse(json)
                     } catch (e) {
-                        res.ok = false; // Set ok to false to throw an error with the body's text.
+                        res.ok = false // Set ok to false to throw an error with the body's text.
                     }
 
                     if (!res.ok) {
-                        throw new ShopifyError(res, json as any);
+                        throw new ShopifyError(res, json as any)
                     }
 
                     if (res.headers.has("Link")) {
@@ -535,4 +535,4 @@ class BaseService {
     // }
 }
 
-export default BaseService;
+export default BaseService
