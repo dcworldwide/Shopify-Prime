@@ -1,4 +1,4 @@
-import { ShopifyObject } from "./base";
+import { ShopifyObject } from "./base"
 
 /**
  * Represents a Shopify redirect.
@@ -75,6 +75,8 @@ export interface PriceRule extends ShopifyObject {
      * the customer applying the price rule must be in the group of customers matching the customer saved searches.
      */
     prerequisite_saved_search_ids?: number[]
+
+    customer_segment_prerequisite_ids?: number[]
 
     /** 
      * A list of entitled product ids.Can be used in combination with entitled_variant_ids. entitled_product_ids can 
