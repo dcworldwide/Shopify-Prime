@@ -74,8 +74,6 @@ export interface PriceRule extends ShopifyObject {
      * A list of prerequisite customer saved search ids. For the price rule to be applicable, 
      * the customer applying the price rule must be in the group of customers matching the customer saved searches.
      */
-    prerequisite_saved_search_ids?: number[]
-
     customer_segment_prerequisite_ids?: number[]
 
     /** 
