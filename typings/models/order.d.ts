@@ -1,4 +1,3 @@
-// Enum imports
 import { FinancialStatus } from "../enums/financial_status"
 import { Address } from "./address"
 import { ShopifyObject } from "./base"
@@ -52,7 +51,8 @@ export interface Order extends ShopifyObject {
     currency?: string
 
     /// A <see cref="ShopifyCustomer"/> object containing information about the customer. This value may be null if the order was created through Shopify POS.    
-    customer?: Customer
+    /// @see https://shopify.dev/changelog/property-deprecations-in-the-rest-admin-api-order-resource
+    customer?: Omit<Customer, "total_spent" | "orders_count" | "last_order_name" | "last_order_id">
 
     /// Applicable discount codes that can be applied to the order.    
     discount_codes?: DiscountCode[]
