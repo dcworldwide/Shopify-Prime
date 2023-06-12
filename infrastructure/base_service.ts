@@ -10,6 +10,7 @@ const logLevel = !!process.env.SHOPIFY_PRIME_LOG_LEVEL ? parseInt(process.env.SH
 const debug = logLevel == 1 || logLevel == 2
 const debugRateLimiter = logLevel == 2
 
+export const SHOPIFY_API_VERSION = "2022-10"
 const RETRY_RATE = 1500
 const API_CALL_LIMIT = "X-Shopify-Shop-Api-Call-Limit"
 const RETRY_AFTER = "Retry-After"
@@ -81,20 +82,18 @@ class BaseService {
     private shopDomain: string
     private accessToken: string
     private resource: string
-    private version: string
 
-    constructor(shopDomain: string, accessToken: string, resource: string, version: string = "2022-07") {
+    constructor(shopDomain: string, accessToken: string, resource: string) {
 
         this.shopDomain = shopDomain
         this.accessToken = accessToken
         this.resource = resource
-        this.version = version
 
         if (!(/^[\/]?admin\//ig.test(resource))) {
             if (resource.toLowerCase().indexOf("oauth") > -1) {
                 this.resource = "admin/" + resource
             } else {
-                this.resource = `admin/api/${version}/${resource}`
+                this.resource = `admin/api/${SHOPIFY_API_VERSION}/${resource}`
             }
         }
     }
