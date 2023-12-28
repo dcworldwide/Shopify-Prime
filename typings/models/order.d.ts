@@ -6,7 +6,6 @@ import { Customer } from "./customer"
 import { DiscountCode } from "./discount_code"
 import { Fulfillment } from "./fulfillment"
 import { LineItem } from "./line_item"
-import { PaymentDetails } from "./payment_details"
 import { Refund } from "./refund"
 import { ShippingLine } from "./shipping_line"
 import { TaxLine } from "./tax_line"
@@ -103,13 +102,19 @@ export interface Order extends ShopifyObject {
     order_number?: number
 
     /// Payment details for this order. May be null if the order was created via API without payment details.
-    payment_details?: PaymentDetails
+    // Dec 28: payment_details properties are available on the corresponding Transaction resources.
+    // payment_details?: PaymentDetails
 
     /// The date that the order was processed at.
     processed_at?: string
 
     /// The type of payment processing method. Known values are 'checkout', 'direct', 'manual', 'offsite', 'express', 'free' and 'none'.    
-    processing_method?: string
+    // Dec 28: The processing_method property is no longer available due to orders supporting multiple transactions with various processing methods,
+    // the field contained incorrect data. The values it provided can be inferred from various sources: 
+    // - free. This is accessible through the order totals. 
+    // - checkout can be determined by the presence of checkout_id on an order. 
+    // - express, direct, offsite, and manual can be inferred through the OrderTransaction gateway and payment_details properties.
+    // processing_method?: string
 
     /// The website that the customer clicked on to come to the shop.    
     referring_site?: string
