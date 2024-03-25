@@ -1,25 +1,25 @@
-import uri = require("jsuri");
-import fetch from "node-fetch";
-import * as crypto from "crypto-js";
-import { AuthGrant } from "../typings/enums/auth_grant";
-import { AuthScope } from "../typings/enums/auth_scope";
-import BaseService from "../infrastructure/base_service";
+import uri = require("jsuri")
+import * as crypto from "crypto-js"
+import fetch from "node-fetch"
+import BaseService from "../infrastructure/base_service"
+import { AuthGrant } from "../typings/enums/auth_grant"
+import { AuthScope } from "../typings/enums/auth_scope"
 
 /**
  * Replaces special querystring characters when calculating an authenticity signature in @isAuthenticRequest and @isAuthenticProxyRequest.
  */
 function replaceChars(s: string, isKey: boolean) {
     if (!s) {
-        return "";
+        return ""
     }
 
-    let output = s.replace(/%/ig, "%25").replace(/&/ig, "%26");
+    let output = s.replace(/%/ig, "%25").replace(/&/ig, "%26")
 
     if (isKey) {
-        output = output.replace(/=/ig, "%3D");
+        output = output.replace(/=/ig, "%3D")
     }
 
-    return output;
+    return output
 }
 
 function buildHashString(type: "web" | "proxy", querystring: { [index: string]: any }) {
@@ -39,9 +39,9 @@ function buildHashString(type: "web" | "proxy", querystring: { [index: string]: 
         .filter((key) => key !== "signature" && key !== "hmac")
         .sort()
         .map(key => `${replaceChars(key, true)}=${replaceChars(querystring[key], false)}`)
-        .join(type === "web" ? "&" : "");
+        .join(type === "web" ? "&" : "")
 
-    return kvps;
+    return kvps
 }
 
 /**
@@ -51,13 +51,14 @@ function buildHashString(type: "web" | "proxy", querystring: { [index: string]: 
  * @param convertToBase64 Whether the resulting hash should be converted to base64 or left as hex. Should be true for validating webhook requests.
  */
 function getHmacHash(secretKey: string, hashString: string, convertToBase64 = false) {
-    let hash = crypto.HmacSHA256(hashString, secretKey); 
+
+    let hash = crypto.HmacSHA256(hashString, secretKey)
 
     if (convertToBase64) {
-        hash = crypto.enc.Base64.stringify(hash);
+        return crypto.enc.Base64.stringify(hash).toString().toUpperCase()
+    } else {
+        return hash.toString().toUpperCase()
     }
-
-    return hash.toString().toUpperCase();
 }
 
 /**
@@ -67,15 +68,15 @@ function getHmacHash(secretKey: string, hashString: string, convertToBase64 = fa
  * @returns a boolean indicating whether the request is authentic or not.
  */
 export async function isAuthenticRequest(querystring: { [index: string]: any }, shopifySecretKey: string) {
-    const hmac = querystring["hmac"] as string;
+    const hmac = querystring["hmac"] as string
 
     if (!hmac) {
-        return false;
+        return false
     }
 
     const computed = getHmacHash(shopifySecretKey, buildHashString("web", querystring))
 
-    return computed === hmac.toUpperCase();
+    return computed === hmac.toUpperCase()
 }
 
 /**
@@ -85,15 +86,15 @@ export async function isAuthenticRequest(querystring: { [index: string]: any }, 
  * @returns a boolean indicating whether the request is authentic or not.
  */
 export async function isAuthenticProxyRequest(querystring: { [index: string]: any }, shopifySecretKey: string) {
-    const signature = querystring["signature"] as string;
+    const signature = querystring["signature"] as string
 
     if (!signature) {
-        return false;
+        return false
     }
 
     const computed = getHmacHash(shopifySecretKey, buildHashString("proxy", querystring))
 
-    return computed === signature.toUpperCase();
+    return computed === signature.toUpperCase()
 }
 
 /**
@@ -104,39 +105,39 @@ export async function isAuthenticProxyRequest(querystring: { [index: string]: an
  * @returns a boolean indicating whether the request is authentic or not.
  */
 export async function isAuthenticWebhook(headers: { [index: string]: any } | string, requestBody: string, shopifySecretKey: string) {
-    let hmac: string;
+    let hmac: string
 
     if (typeof headers === "string") {
-        hmac = headers;
+        hmac = headers
     }
     else {
-        const headerName = "X-Shopify-Hmac-SHA256";
-        hmac = headers[headerName] || headers[headerName.toLowerCase()];
+        const headerName = "X-Shopify-Hmac-SHA256"
+        hmac = headers[headerName] || headers[headerName.toLowerCase()]
     }
 
     if (!hmac) {
-        return false;
+        return false
     }
 
-    const computed = getHmacHash(shopifySecretKey, requestBody, true);
+    const computed = getHmacHash(shopifySecretKey, requestBody, true)
 
-    return computed === hmac.toUpperCase();
+    return computed === hmac.toUpperCase()
 }
 
 /**
  * A convenience function that tries to ensure that a given URL is a valid Shopify store by checking the response headers for X-ShopId. This is an undocumented feature, use at your own risk.
  */
 export async function isValidShopifyDomain(shopifyDomain: string) {
-    const url = new uri(shopifyDomain);
-    url.protocol("https");
-    url.path("/admin");
+    const url = new uri(shopifyDomain)
+    url.protocol("https")
+    url.path("/admin")
 
     const response = await fetch(url.toString(), {
         method: "HEAD",
         headers: BaseService.buildDefaultHeaders(),
-    });
+    })
 
-    return response.headers.has("X-ShopId");
+    return response.headers.has("X-ShopId")
 }
 
 /**
@@ -149,27 +150,27 @@ export async function isValidShopifyDomain(shopifyDomain: string) {
  * @param grants An optional array of token grant types.
  */
 export async function buildAuthorizationUrl(scopes: AuthScope[], shopifyDomain: string, shopifyApiKey: string, redirectUrl?: string, state?: string, grants?: AuthGrant[]) {
-    const url = new uri(shopifyDomain);
-    url.protocol("https");
-    url.path("admin/oauth/authorize");
-    url.addQueryParam("client_id", shopifyApiKey);
-    url.addQueryParam("scope", scopes.join(","));
+    const url = new uri(shopifyDomain)
+    url.protocol("https")
+    url.path("admin/oauth/authorize")
+    url.addQueryParam("client_id", shopifyApiKey)
+    url.addQueryParam("scope", scopes.join(","))
 
     if (redirectUrl) {
-        url.addQueryParam("redirect_uri", redirectUrl);
+        url.addQueryParam("redirect_uri", redirectUrl)
     }
 
     if (state) {
-        url.addQueryParam("state", state);
+        url.addQueryParam("state", state)
     }
 
     if (grants && Array.isArray(grants)) {
-        grants.forEach(grant => url.addQueryParam("grant_options[]", grant));
-    } else if (grants && typeof(grants) === "string") {
-        url.addQueryParam("grant_options[]", grants as string);
+        grants.forEach(grant => url.addQueryParam("grant_options[]", grant))
+    } else if (grants && typeof (grants) === "string") {
+        url.addQueryParam("grant_options[]", grants as string)
     }
 
-    return url.toString();
+    return url.toString()
 }
 
 
@@ -182,9 +183,9 @@ export async function buildAuthorizationUrl(scopes: AuthScope[], shopifyDomain: 
  * @returns The access token.
  */
 export async function authorize(code: string, shopDomain: string, shopifyApiKey: string, shopifySecretKey: string) {
-    const response = await new AuthorizeService(shopDomain).authorize(shopifyApiKey, shopifySecretKey, code);
+    const response = await new AuthorizeService(shopDomain).authorize(shopifyApiKey, shopifySecretKey, code)
 
-    return response;
+    return response
 }
 
 /**
@@ -192,7 +193,7 @@ export async function authorize(code: string, shopDomain: string, shopifyApiKey:
  */
 class AuthorizeService extends BaseService {
     constructor(shopDomain: string) {
-        super(shopDomain, undefined, "oauth");
+        super(shopDomain, undefined, "oauth")
     }
 
     public authorize(shopifyApiKey: string, shopifySecretKey: string, code: string) {
@@ -200,6 +201,6 @@ class AuthorizeService extends BaseService {
             client_id: shopifyApiKey,
             client_secret: shopifySecretKey,
             code: code,
-        });
+        })
     }
 }
