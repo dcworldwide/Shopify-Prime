@@ -1,9 +1,9 @@
 import uri = require("jsuri")
 import fetch, { Response } from "node-fetch"
 import { resolve } from "path"
+import { v4 as uuid } from 'uuid'
 import ShopifyError from "./shopify_error"
 const Bottleneck = require("bottleneck")
-const uuid = require('uuid/v4')
 
 const version = require(resolve(__dirname, "../../package.json")).version // Get package.json from 2-levels up as this file will be in dist/infrastructure.
 const logLevel = !!process.env.SHOPIFY_PRIME_LOG_LEVEL ? parseInt(process.env.SHOPIFY_PRIME_LOG_LEVEL) : 0
