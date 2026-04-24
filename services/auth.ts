@@ -125,7 +125,7 @@ export async function isAuthenticWebhook(headers: { [index: string]: any } | str
 }
 
 /**
- * A convenience function that tries to ensure that a given URL is a valid Shopify store by checking the response headers for X-ShopId. This is an undocumented feature, use at your own risk.
+ * A convenience function that tries to ensure that a given URL is a valid Shopify store by checking the response status. Shopify returns a 303 redirect for valid stores and a 404 for invalid ones.
  */
 export async function isValidShopifyDomain(shopifyDomain: string) {
     const url = new uri(shopifyDomain)
@@ -134,10 +134,13 @@ export async function isValidShopifyDomain(shopifyDomain: string) {
 
     const response = await fetch(url.toString(), {
         method: "HEAD",
+        redirect: "manual",
         headers: BaseService.buildDefaultHeaders(),
     })
 
-    return response.headers.has("X-ShopId")
+    console.log(`Shopify domain validation response for ${shopifyDomain}: ${response?.status}`)
+
+    return response.status === 303
 }
 
 /**
