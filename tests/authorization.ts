@@ -132,25 +132,21 @@ describe("Shopify Prime auth functions", function () {
 
         it("should return true for a valid request with a header string", async () => {
             const result = await Auth.isAuthenticWebhook(header, body, config.secretKey)
-
             expect(result).to.equal(true)
         })
 
         it('should return true for a valid request with a header object', async () => {
             const result = await Auth.isAuthenticWebhook({ "X-Shopify-Hmac-SHA256": header }, body, config.secretKey)
-
             expect(result).to.equal(true)
         })
 
         it('should return true for a valid request with a header object and lowercase header name', async () => {
             const result = await Auth.isAuthenticWebhook({ "x-shopify-hmac-sha256": header }, body, config.secretKey)
-
             expect(result).to.equal(true)
         })
 
         it("should return false for an invalid request", async () => {
             const result = await Auth.isAuthenticWebhook({}, body, config.secretKey)
-
             expect(result).to.equal(false)
         })
     })

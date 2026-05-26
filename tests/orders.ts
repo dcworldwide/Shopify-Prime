@@ -31,13 +31,13 @@ describe("Orders", function () {
                     name: "Test Line Item",
                     title: "Test Line Item Title",
                     quantity: 2,
-                    price: 5
+                    price: "5"
                 },
                 {
                     name: "Test Line Item 2",
                     title: "Test Line Item Title 2",
                     quantity: 2,
-                    price: 5
+                    price: "5"
                 }
             ],
             financial_status: "paid",
